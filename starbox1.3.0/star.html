@@ -1,0 +1,22 @@
+<html>
+<head>
+	<title>Star Rating using Prototype</title>
+<script type='text/javascript' src='js/prototype1.7.1.js'></script>
+
+	<link rel="stylesheet" type="text/css" href="css/starbox.css" />
+	<script type="text/javascript" src="js/starbox.js"></script>
+<head>
+<body>
+<div id='demo_9'></div>
+  <script language='javascript' type='text/javascript'>
+    new Starbox('demo_9', 2.5, { overlay: 'pointy.png', buttons: 10, total: 1, rated: true, rerate: true, ghosting: true,onRate: myOnRate });
+
+function myOnRate(element, memo) {
+  alert(element);
+alert(memo.rated);
+}
+
+  </script>
+</body>
+</html>
+
