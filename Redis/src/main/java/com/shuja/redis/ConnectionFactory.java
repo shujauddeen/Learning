@@ -16,31 +16,22 @@ public class ConnectionFactory {
 	
 	public ConnectionFactory(Configuration conf) {
 		try{
-			System.out.println(conf.getInt("maxIdleConnection"));
-			System.out.println(conf.getInt("minIdleConnection"));
 			this.auth = conf.getString("authToken");
-			System.out.println("hello");
-			poolConfig.setMaxIdle(10);
-	        poolConfig.setMinIdle(1);
-	        System.out.println("hai");
+			poolConfig.setMaxIdle(conf.getInt("maxIdleConnection"));
+	        poolConfig.setMinIdle(conf.getInt("minIdleConnection"));
 	        poolConfig.setTestOnBorrow(conf.getBoolean("testOnBorrow"));
-	        System.out.println("intermediat22");
 	        connectionPool = new JedisPool(poolConfig, conf.getString("host"), conf.getInt("port"));
 	        System.out.println("intermedate");
 		}catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(e.toString() + "    dfaSFD ");
 		}
 		
 	}
 	
 	public Jedis getConnection() throws Exception {
 		try {
-			System.out.println("check1");
 			jedis = connectionPool.getResource();
-			System.out.println("check2");
 			jedis.auth(this.auth);
-			System.out.println("check3");
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
