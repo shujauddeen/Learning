@@ -1,6 +1,5 @@
 package com.shuja.redis;
 
-import java.net.URISyntaxException;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -9,18 +8,40 @@ import redis.clients.jedis.Jedis;
 public class Redis {
 
 	
-	private final Jedis jedis;
+	private Jedis jedis;
     private Configuration config;
 
-    //    private final Connection connection;
-    public Redis(Configuration config) throws Exception{
-        //Get the configuration object and use it
-        this.config = config;
-        jedis = ConnectionFactory.getInstance(this.config).getConnection();
+    public Redis(Configuration config){
+        this.config = config;       
+    }
+    
+    public void getConnection() throws Exception{
+    	jedis = ConnectionFactory.getInstance(this.config).getConnection();
+    }
+
+    public void returnConnection(){
+    	/// ... it's important to return the Jedis instance to the pool once you've finished using it
+			try {
+				if (null != jedis)
+					ConnectionFactory.getInstance(this.config).returnConnection(jedis);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+    }
+    
+    public void returnBrokenConnection(){
+    	/// ... it's important to return the Jedis instance to the pool once you've finished using it
+			try {
+				if (null != jedis)
+					ConnectionFactory.getInstance(this.config).returnBrokenConnection(jedis);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
     }
     
     
-
     public <T> boolean set(T key, T value) {
       
         final String ret = this.jedis.set(key.toString(),  value.toString());

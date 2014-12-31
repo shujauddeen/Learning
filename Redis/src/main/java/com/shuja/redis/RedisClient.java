@@ -20,13 +20,14 @@ public class RedisClient {
 		
 		String propertyFile = "settings.properties";
 		String confDir = "/home/km/JavaWorkspace/Learning/Redis/src/main/resources/conf";
-		
+		Redis redis = null;
 		try {
 			
 			final File confFile = new File(confDir, propertyFile);
 			final PropertiesConfiguration config = new PropertiesConfiguration(confFile);
 			
-			Redis redis = new Redis(config);
+			redis = new Redis(config);
+			
 			
 //			boolean x = redis.set("12345", "4587");
 			
@@ -59,9 +60,11 @@ public class RedisClient {
 				int  x = rand.nextInt(99);
 				System.out.println(data + x);
 				start = System.currentTimeMillis();
+				redis.getConnection();
 				System.out.println("response :" + redis.get(data + x));
+				redis.returnConnection();
 				end = System.currentTimeMillis();
-				System.out.println(end-start + " secs");
+				System.out.println(end-start + " ms");
 			}
 			
 			
@@ -75,7 +78,7 @@ public class RedisClient {
 			
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			redis.returnBrokenConnection();
 			e.printStackTrace();
 		}
 		
