@@ -13,6 +13,7 @@ public class ConnectionFactory {
 	private JedisPoolConfig poolConfig = new JedisPoolConfig();
 	private static JedisPool connectionPool;
 	private String auth;
+	static final Object _lock = new Object();
 	
 	public ConnectionFactory(Configuration conf) {
 		try{
@@ -31,7 +32,7 @@ public class ConnectionFactory {
 	public Jedis getConnection() throws Exception {
 		try {
 			jedis = connectionPool.getResource();
-			jedis.auth(this.auth);
+//			jedis.auth(this.auth);
 		} catch (Exception e) {
 			throw new Exception(e);
 		}
@@ -41,8 +42,9 @@ public class ConnectionFactory {
 	public static ConnectionFactory getInstance(Configuration conf)
 			throws Exception {
 		if (conn == null) {
-			conn  = new ConnectionFactory(conf);
-			
+			synchronized (_lock) {
+				conn  = new ConnectionFactory(conf);
+			}
 		}
 		return conn;
 	}

@@ -1,6 +1,8 @@
 package com.shuja.redis;
 
 
+import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
 
 import redis.clients.jedis.Jedis;
@@ -87,4 +89,23 @@ public class Redis {
     }
     
     
+    public <T> void lpush(T key, T value) {
+        if (key == null || key.toString().isEmpty())
+            throw new NullPointerException("The key cannot be null or empty.");
+         this.jedis.lpush(key.toString(), value.toString());
+         
+    }
+    
+    public <T> List<String> lrange(T key, long firstIndix, long lastIndex) {
+        if (key == null || key.toString().isEmpty())
+            throw new NullPointerException("The key cannot be null or empty.");
+        return this.jedis.lrange(key.toString(), firstIndix, lastIndex);
+    }
+    
+//    public <T> List<String> mget(String key) {
+//        if (key == null || key.toString().isEmpty())
+//            throw new NullPointerException("The key cannot be null or empty.");
+//        return this.jedis.mget(key);
+//         
+//    } 
 }
