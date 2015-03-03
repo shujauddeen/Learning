@@ -80,4 +80,112 @@
 		
 	</dependencies>
 	
+	
+	<build>
+		<plugins>
+			<plugin>
+   			      <groupId>org.apache.maven.plugins</groupId>
+			      <artifactId>maven-compiler-plugin</artifactId>
+			      <version>2.3.2</version>
+       			      <configuration>
+				      <meminitial>512m</meminitial>
+				      <maxmem>1024m</maxmem>
+				      <source>${java.version}</source>
+				      <target>${java.version}</target>
+			      </configuration>
+		       </plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<version>2.0.1</version>
+				<extensions>true</extensions>
+
+				<configuration>
+					<copyright>komli</copyright>
+					<distribution>komli</distribution>
+					<release>1</release>
+					<group>utilties</group>
+					<packager>reducedata</packager>
+					<provides>
+						<provide>redisclient</provide>
+					</provides>
+					<changelogFile>src/changelog</changelogFile>
+					<defineStatements>
+						<defineStatement>_unpackaged_files_terminate_build 0
+						</defineStatement>
+					</defineStatements>
+					<mappings>
+						<mapping>
+							<directory>/etc/init.d/</directory>
+							<directoryIncluded>false</directoryIncluded>
+							<filemode>775</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>src/main/resources/etc/init.d/redisclient</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/opt/redisclient/bin</directory>
+							<filemode>775</filemode>
+							<username>root</username>
+							<groupname>root</groupname>
+							<sources>
+								<source>
+									<location>src/main/resources/bin</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/opt/redisclient/conf</directory>
+							<username>root</username>
+							<groupname>root</groupname>
+							<configuration>true</configuration>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>src/main/resources/conf</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/opt/redisclient/lib</directory>
+							<username>root</username>
+							<groupname>root</groupname>
+							<filemode>775</filemode>
+							<sources>
+								<source>
+									<location>target/Redis-${project.version}.jar</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/opt/redisclient/lib</directory>
+							<username>root</username>
+							<groupname>root</groupname>
+							<filemode>775</filemode>
+							<dependency />
+						</mapping>
+						<mapping>
+							<directory>/opt/redisclient/logs</directory>
+							<username>root</username>
+							<groupname>root</groupname>
+							<filemode>775</filemode>
+						</mapping>
+					</mappings>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>libs-release</name>
+        	  <url>http://maven.komlimobile.com/artifactory/libs-release</url>
+		</repository>
+	</repositories>
+	
 </project>

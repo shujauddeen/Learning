@@ -3,44 +3,15 @@ package com.shuja.redis;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
 
 import redis.clients.jedis.Jedis;
 
 public class Redis {
 
 	
-	private Jedis jedis;
-    private Configuration config;
-
-    public Redis(Configuration config){
-        this.config = config;       
-    }
-    
-    public void getConnection() throws Exception{
-    	jedis = ConnectionFactory.getInstance(this.config).getConnection();
-    }
-
-    public void returnConnection(){
-    	/// ... it's important to return the Jedis instance to the pool once you've finished using it
-			try {
-				if (null != jedis)
-					ConnectionFactory.getInstance(this.config).returnConnection(jedis);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-    }
-    
-    public void returnBrokenConnection(){
-    	/// ... it's important to return the Jedis instance to the pool once you've finished using it
-			try {
-				if (null != jedis)
-					ConnectionFactory.getInstance(this.config).returnBrokenConnection(jedis);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
+    Jedis jedis = null;
+    public Redis(Jedis jed){
+        jedis = jed;       
     }
     
     

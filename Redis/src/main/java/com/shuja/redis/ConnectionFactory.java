@@ -9,13 +9,12 @@ import redis.clients.jedis.JedisPoolConfig;
 public class ConnectionFactory {
 
 	private static ConnectionFactory conn = null;
-	private Jedis jedis;
 	private JedisPoolConfig poolConfig = new JedisPoolConfig();
 	private static JedisPool connectionPool;
 	private String auth;
 	static final Object _lock = new Object();
 	
-	public ConnectionFactory(Configuration conf) {
+	private ConnectionFactory(Configuration conf) {
 		try{
 			this.auth = conf.getString("authToken");
 			poolConfig.setMaxIdle(conf.getInt("maxIdleConnection"));
@@ -29,14 +28,8 @@ public class ConnectionFactory {
 		
 	}
 	
-	public Jedis getConnection() throws Exception {
-		try {
-			jedis = connectionPool.getResource();
-//			jedis.auth(this.auth);
-		} catch (Exception e) {
-			throw new Exception(e);
-		}
-		return jedis;
+	public Jedis getConnection() {
+			return connectionPool.getResource();
 	}
 
 	public static ConnectionFactory getInstance(Configuration conf)
